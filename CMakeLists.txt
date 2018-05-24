@@ -9,6 +9,7 @@ option(BUILD_TESTS "Build tests." OFF)
 set(SOUL_ROOT "N:/Projects/Soul Engine" CACHE STRING "The directory location of Soul Engine")
 set(SOUL_BUILD "N:/Projects/Soul Engine/Build" CACHE STRING "The build location of Soul Engine")
 
+
 ##############################################
 #Project 
 
@@ -27,6 +28,11 @@ project(SoulEditor
 )
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
+
+if(MSVC)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+endif()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
