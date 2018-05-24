@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Application.h"
+#include "SoulApplication.h"
 
-class Editor : public Application<Editor> {
+class Editor : public SoulApplication<Editor> {
 
 public:
 

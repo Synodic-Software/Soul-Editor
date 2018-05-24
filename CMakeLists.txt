@@ -6,10 +6,19 @@ cmake_minimum_required(VERSION 3.11.0 FATAL_ERROR)
 
 
 option(BUILD_TESTS "Build tests." OFF)
-set(SOUL_ROOT "../Soul Engine" CACHE STRING "The directory location of Soul Engine")
+set(SOUL_ROOT "N:/Projects/Soul Engine" CACHE STRING "The directory location of Soul Engine")
+set(SOUL_BUILD "N:/Projects/Soul Engine/Build" CACHE STRING "The build location of Soul Engine")
 
 ##############################################
 #Project 
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/Hunter/HunterGate.cmake)
+
+HunterGate(
+    URL "https://github.com/ruslo/hunter/archive/v0.21.6.tar.gz"
+    SHA1 "19e74186aa97d8c3ebe799083cd5e97d87701552"
+    FILEPATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Hunter/config.cmake
+)
 
 project(SoulEditor
 	VERSION 0.0.1
@@ -17,14 +26,10 @@ project(SoulEditor
 	LANGUAGES CXX
 )
 
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(DIRECTORY ${PROJECT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 
 ##############################################
@@ -47,8 +52,8 @@ source_groups(${PROJECT_FILES})
 #Dependencies
 
 
-#none
-
+#find_package(SoulEngine REQUIRED)
+add_subdirectory(${SOUL_ROOT} ${SOUL_BUILD})
 
 ##############################################
 #Targets
@@ -57,28 +62,25 @@ source_groups(${PROJECT_FILES})
 add_executable(${PROJECT_NAME} ${PROJECT_FILES})
 
 set_target_properties(${PROJECT_NAME} 
-	PROPERTIES 
+    PROPERTIES 
         LINKER_LANGUAGE CXX
-	   	CXX_EXTENSIONS OFF	
-		CUDA_SEPARABLE_COMPILATION ON
+        CXX_EXTENSIONS OFF  
+        CXX_STANDARD 17
 )
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
         $<INSTALL_INTERFACE:Include>
     PRIVATE
         Source
-        ${SOUL_ROOT}/Include
-        ${SOUL_ROOT}/Source
 )
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
 
     PRIVATE		
-        ${SOUL_ROOT}/Libraries/SoulEngine.lib
+        Soul::SoulEngine
 )
 
 
