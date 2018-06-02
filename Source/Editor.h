@@ -2,10 +2,8 @@
 
 #include "SoulApplication.h"
 
-class Editor : public SoulApplication<Editor> {
+class Editor : public SoulApplication {
+	
 
-public:
-
-private:
 
 };
