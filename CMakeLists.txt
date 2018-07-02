@@ -61,6 +61,10 @@ source_groups(${PROJECT_FILES})
 #find_package(SoulEngine REQUIRED)
 add_subdirectory(${SOUL_ROOT} ${SOUL_BUILD})
 
+#GLM target
+hunter_add_package(glm)
+find_package(glm REQUIRED)
+
 ##############################################
 #Targets
 
@@ -86,6 +90,7 @@ target_link_libraries(${PROJECT_NAME}
     PUBLIC
 
     PRIVATE		
+        glm
         Soul::SoulEngine
 )
 
