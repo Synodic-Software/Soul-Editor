@@ -21,7 +21,7 @@ int main(int, char*[])
 	windowParams.pixelWidth = 512;
 	windowParams.pixelHeight = 512;
 
-	Window* window = app.CreateWindow(windowParams);
+	Window& window = app.CreateWindow(windowParams);
 
 	//Window* mainWindow = CreateWindow(singleWindowType, "main", monitor, xPos, yPos, xSize, ySize);
 
