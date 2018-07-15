@@ -16,10 +16,10 @@ int main(int, char*[])
 	windowParams.type = WindowType::WINDOWED;
 	windowParams.title = "Main";
 	windowParams.monitor = 0;
-	windowParams.pixelPosX = 0;
-	windowParams.pixelPosY = 0;
-	windowParams.pixelWidth = 512;
-	windowParams.pixelHeight = 512;
+	windowParams.pixelPosition.x = 0;
+	windowParams.pixelPosition.y = 0;
+	windowParams.pixelSize.x = 512;
+	windowParams.pixelSize.y = 512;
 
 	Window& window = app.CreateWindow(windowParams);
 
