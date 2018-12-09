@@ -11,10 +11,15 @@
       "installRoot": "${projectDir}\\Libraries\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "ctestCommandArgs": ""
+      "variables": [
+        {
+          "name": "ENGINE_REPOSITORY_PATH",
+          "value": "N:\\Projects\\Soul Engine"
+        }
+      ]
     },
     {
-      "name": "Release",
+      "name": "RelWithDebug",
       "generator": "Ninja",
       "configurationType": "RelWithDebInfo",
       "inheritEnvironments": [
@@ -24,7 +29,30 @@
       "installRoot": "${projectDir}\\Libraries\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "ctestCommandArgs": ""
+      "variables": [
+        {
+          "name": "ENGINE_REPOSITORY_PATH",
+          "value": "N:\\Projects\\Soul Engine"
+        }
+      ]
+    },
+    {
+      "name": "Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "inheritEnvironments": [
+        "msvc_x64_x64"
+      ],
+      "buildRoot": "${projectDir}\\Build\\${name}",
+      "installRoot": "${projectDir}\\Libraries\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "variables": [
+        {
+          "name": "ENGINE_REPOSITORY_PATH",
+          "value": "N:\\Projects\\Soul Engine"
+        }
+      ]
     }
   ]
 }
