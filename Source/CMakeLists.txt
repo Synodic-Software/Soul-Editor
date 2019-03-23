@@ -15,12 +15,11 @@ if(MSVC)
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 endif()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  )
-
 
 ##############################################
 #Sources
 
+#TODO: Get rid of the globs. More elegant solution needed.
 file(GLOB_RECURSE PROJECT_HEADERS *.h)
 file(GLOB_RECURSE PROJECT_SOURCES *.cpp)
 set (PROJECT_FILES 
@@ -32,6 +31,7 @@ set (PROJECT_FILES
 ##############################################
 #Dependencies
 
+#TODO: Pull Engine from Conan remote and use that as a dependancy if an editable package is not found
 #Conan via CMake
 include(${CMAKE_SOURCE_DIR}/Tools/Conan/conan.cmake)
 
@@ -39,14 +39,15 @@ conan_cmake_run(CONANFILE ${CMAKE_SOURCE_DIR}/Tools/Conan/conanfile.txt
                 BASIC_SETUP CMAKE_TARGETS
                 BUILD missing)
 
-add_subdirectory(${CONAN_USER_SOULENGINE_ENGINE_PATH})
+#Engine path
+add_subdirectory(${CONAN_USER_SOULENGINE_ENGINE_PATH} ${CONAN_USER_SOULENGINE_ENGINE_PATH}/Build)
 
 ##############################################
 #Targets
 
-add_executable(SoulEditor ${PROJECT_FILES})
+add_executable(${PROJECT_NAME} ${PROJECT_FILES})
 
-set_target_properties(SoulEditor 
+set_target_properties(${PROJECT_NAME} 
     PROPERTIES 
         LINKER_LANGUAGE CXX
         CXX_EXTENSIONS OFF  
@@ -54,7 +55,7 @@ set_target_properties(SoulEditor
 		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/Build"
 )
 
-target_link_libraries(SoulEditor
+target_link_libraries(${PROJECT_NAME}
     PUBLIC
 		CONAN_PKG::SoulEngine
 )
