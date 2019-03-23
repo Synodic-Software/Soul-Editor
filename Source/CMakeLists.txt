@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.13.1 FATAL_ERROR)
 
 
 ##############################################
@@ -10,17 +10,12 @@ project(SoulEditor
 	LANGUAGES CXX
 )
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/CMake)
-
 if(MSVC)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 endif()
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT SoulEditor)
-
-set(ENGINE_REPOSITORY_PATH "" CACHE STRING "If set, the editor will not pull the default engine. This should be set if you are developing an engine at the same time." )
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  )
 
 
 ##############################################
@@ -37,18 +32,14 @@ set (PROJECT_FILES
 ##############################################
 #Dependencies
 
-if (ENGINE_REPOSITORY_PATH STREQUAL "")
+#Conan via CMake
+include(${CMAKE_SOURCE_DIR}/Tools/Conan/conan.cmake)
 
-    #TODO Pull Conan package for default Engine
-    message( SEND_ERROR "`ENGINE_REPOSITORY_PATH` is not set. Default engine package is not implemented yet. See issue #_" )
-    include(${CMAKE_CURRENT_SOURCE_DIR}/Build/conanbuildinfo.cmake)
-    conan_basic_setup(TARGETS)
+conan_cmake_run(CONANFILE ${CMAKE_SOURCE_DIR}/Tools/Conan/conanfile.txt
+                BASIC_SETUP CMAKE_TARGETS
+                BUILD missing)
 
-else()
-
-    add_subdirectory(${ENGINE_REPOSITORY_PATH} ${ENGINE_REPOSITORY_PATH}/Build)
-
-    endif()
+add_subdirectory(${CONAN_USER_SOULENGINE_ENGINE_PATH})
 
 ##############################################
 #Targets
@@ -60,18 +51,10 @@ set_target_properties(SoulEditor
         LINKER_LANGUAGE CXX
         CXX_EXTENSIONS OFF  
         CXX_STANDARD 17
-)
-
-target_include_directories(SoulEditor
-    PUBLIC 
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include>
-        $<INSTALL_INTERFACE:Include>
-    PRIVATE
+		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/Build"
 )
 
 target_link_libraries(SoulEditor
     PUBLIC
-
-    PRIVATE
-        SoulEngine
+		CONAN_PKG::SoulEngine
 )

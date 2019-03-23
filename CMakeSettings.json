@@ -1,58 +1,41 @@
-{
+﻿{
+  "environments": [ { "BuildDir": "${projectDir}\\Build" } ],
   "configurations": [
-    {
-      "name": "Debug",
-      "generator": "Ninja",
-      "configurationType": "Debug",
-      "inheritEnvironments": [
-        "msvc_x64_x64"
-      ],
-      "buildRoot": "${projectDir}\\Build\\${name}",
-      "installRoot": "${projectDir}\\Libraries\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "variables": [
-        {
-          "name": "ENGINE_REPOSITORY_PATH",
-          "value": "N:\\Projects\\Soul Engine"
-        }
-      ]
-    },
-    {
-      "name": "RelWithDebug",
-      "generator": "Ninja",
-      "configurationType": "RelWithDebInfo",
-      "inheritEnvironments": [
-        "msvc_x64_x64"
-      ],
-      "buildRoot": "${projectDir}\\Build\\${name}",
-      "installRoot": "${projectDir}\\Libraries\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "",
-      "variables": [
-        {
-          "name": "ENGINE_REPOSITORY_PATH",
-          "value": "N:\\Projects\\Soul Engine"
-        }
-      ]
-    },
     {
       "name": "Release",
       "generator": "Ninja",
       "configurationType": "Release",
-      "inheritEnvironments": [
-        "msvc_x64_x64"
-      ],
-      "buildRoot": "${projectDir}\\Build\\${name}",
+      "buildRoot": "${env.BuildDir}\\${name}",
       "installRoot": "${projectDir}\\Libraries\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
-      "variables": [
-        {
-          "name": "ENGINE_REPOSITORY_PATH",
-          "value": "N:\\Projects\\Soul Engine"
-        }
-      ]
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": []
+    },
+    {
+      "name": "Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${env.BuildDir}\\${name}",
+      "installRoot": "${projectDir}\\Libraries\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": []
+    },
+    {
+      "name": "RelWithDebInfo",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "buildRoot": "${env.BuildDir}\\${name}",
+      "installRoot": "${projectDir}\\Libraries\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": []
     }
   ]
 }
