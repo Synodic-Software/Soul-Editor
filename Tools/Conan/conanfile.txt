@@ -1,2 +1,5 @@
 [requires]
 SoulEngine/0.0.1@synodic/testing
+
+[generator]
+cmake_multi
