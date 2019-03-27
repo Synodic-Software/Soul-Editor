@@ -43,6 +43,7 @@ conan_cmake_run(CONANFILE ../Tools/Conan/conanfile.txt
 #Engine path
 add_subdirectory(${CONAN_USER_SOULENGINE_ENGINE_PATH} ${CONAN_USER_SOULENGINE_ENGINE_PATH}/Build)
 
+
 ##############################################
 #Targets
 
@@ -60,3 +61,10 @@ target_link_libraries(${PROJECT_NAME}
     PUBLIC
 		CONAN_PKG::SoulEngine
 )
+
+#TODO: Proper resource handling via Conan probably. No need to pass around all these janky files
+add_custom_command( TARGET ${PROJECT_NAME} 
+                    POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+                    ${CONAN_USER_SOULENGINE_ENGINE_PATH}/Resources
+                    ${CMAKE_BINARY_DIR}/Resources)
