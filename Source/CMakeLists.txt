@@ -35,10 +35,11 @@ set (PROJECT_FILES
 #Conan via CMake
 include(${CMAKE_SOURCE_DIR}/Tools/Conan/conan.cmake)
 
-conan_cmake_run(CONANFILE ${CMAKE_SOURCE_DIR}/Tools/Conan/conanfile.txt
+conan_cmake_run(CONANFILE ../Tools/Conan/conanfile.txt
                 BASIC_SETUP CMAKE_TARGETS
                 BUILD missing)
 
+#TODO: replace with Conan workspaces
 #Engine path
 add_subdirectory(${CONAN_USER_SOULENGINE_ENGINE_PATH} ${CONAN_USER_SOULENGINE_ENGINE_PATH}/Build)
 
