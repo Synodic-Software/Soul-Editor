@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.13.1 FATAL_ERROR)
 
+#Set CMake tools location
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Tools/CMake)
+
+#set prior to target definition
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 
 ##############################################
 #Project 
@@ -22,6 +28,9 @@ set (PROJECT_FILES
     ${PROJECT_SOURCES} 
 )
 
+#Provides Visual Studio filter support
+include(source_groups)
+source_groups(${PROJECT_FILES})
 
 ##############################################
 #Dependencies
@@ -49,6 +58,7 @@ set_target_properties(${PROJECT_NAME}
         LINKER_LANGUAGE CXX
         CXX_EXTENSIONS OFF  
         CXX_STANDARD 17
+		VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}
 )
 
 target_link_libraries(${PROJECT_NAME}
