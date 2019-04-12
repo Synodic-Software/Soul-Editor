@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.13.1 FATAL_ERROR)
 #Set CMake tools location
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Tools/CMake)
 
-#set prior to target definition
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
 
 ##############################################
 #Project 
@@ -16,21 +13,6 @@ project(SoulEditor
 	LANGUAGES CXX
 )
 
-
-##############################################
-#Sources
-
-#TODO: Get rid of the globs. More elegant solution needed.
-file(GLOB_RECURSE PROJECT_HEADERS Source/*.h)
-file(GLOB_RECURSE PROJECT_SOURCES Source/*.cpp)
-set (PROJECT_FILES 
-    ${PROJECT_HEADERS} 
-    ${PROJECT_SOURCES} 
-)
-
-#Provides Visual Studio filter support
-include(source_groups)
-source_groups(${PROJECT_FILES})
 
 ##############################################
 #Dependencies
@@ -51,19 +33,37 @@ add_subdirectory(${CONAN_USER_SOULENGINE_ENGINE_PATH} ${CONAN_USER_SOULENGINE_EN
 ##############################################
 #Targets
 
-add_executable(${PROJECT_NAME} ${PROJECT_FILES})
+add_executable(${PROJECT_NAME} "")
 
 set_target_properties(${PROJECT_NAME} 
     PROPERTIES 
         LINKER_LANGUAGE CXX
         CXX_EXTENSIONS OFF  
         CXX_STANDARD 17
+        USE_FOLDERS ON
 )
 
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
 		CONAN_PKG::SoulEngine
 )
+
+##############################################
+#Sources
+
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        Source/Editor.cpp
+        Source/Editor.h
+)
+
+#Provides Visual Studio filter support
+get_target_property(PROJECT_SOURCES ${PROJECT_NAME} SOURCES)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${PROJECT_SOURCES})
+
+
+##############################################
+#Installation
 
 #TODO: Proper resource handling via Conan probably. No need to pass around all these janky files
 add_custom_command( TARGET ${PROJECT_NAME} 
